@@ -1,0 +1,28 @@
+{
+  "name": "mobserver",
+  "version": "1.0.0",
+  "description": "assignments &amp; others",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haskone/mobile_data_man_assigments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haskone/mobile_data_man_assigments/issues"
+  },
+  "homepage": "https://github.com/haskone/mobile_data_man_assigments#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
