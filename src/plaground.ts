@@ -22,7 +22,6 @@ db.selectAll((row, err) => {
   );
 });
 
-console.log("****WHERE SALARY:****\n");
 db.selectQuery(
   `SELECT * FROM ${TABLE_NAME} WHERE salary > 80000`,
   (row, err) => {
@@ -30,7 +29,6 @@ db.selectQuery(
   }
 );
 
-console.log("****AVG SALARY:****\n");
 db.selectQuery(
   `SELECT AVG(salary) FROM ${TABLE_NAME} GROUP BY department_name`,
   (row, err) => {
@@ -38,11 +36,22 @@ db.selectQuery(
   }
 );
 
-console.log("****DISTINCT DEPS:****\n");
 db.selectQuery(
   `SELECT DISTINCT(department_name) FROM ${TABLE_NAME}`,
   (row, err) => {
     console.log(row);
+  }
+);
+
+// Let's pretend we dont know SQL add some js processing just for ...
+let depToSalary = {};
+db.selectQuery(
+  `SELECT department_name, salary FROM ${TABLE_NAME}`,
+  (row, err) => {
+    depToSalary[row.department_name] = depToSalary[row.department_name]
+      ? depToSalary[row.department_name] + row.salary
+      : 0;
+    console.log("CURR MAPPING:", depToSalary);
   }
 );
 
