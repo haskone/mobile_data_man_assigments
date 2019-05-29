@@ -38,6 +38,7 @@ const CREATE_TABLE_DEPARTMENT = `
     budget NUMBER
   )
 `;
+// TODO: add table "buildings" and make foreign keys
 
 const getInsertPrep = (table: string) => {
   return `INSERT INTO ${table}
@@ -86,11 +87,11 @@ function prints(db: any) {
     );
 
     const SQL_CAPACITY = `
-    SELECT dept_name, SUM(capacity) as total_capacity FROM ${TABLE_DEPARTMENT} 
-    LEFT JOIN ${TABLE_CLASSROOM}
-    ON ${TABLE_DEPARTMENT}.building = ${TABLE_CLASSROOM}.building
-    GROUP BY ${TABLE_DEPARTMENT}.dept_name
-  `;
+        SELECT dept_name, SUM(capacity) as total_capacity FROM ${TABLE_DEPARTMENT} as dept
+        LEFT JOIN ${TABLE_CLASSROOM} as classroom
+        ON dept.building = classroom.building
+        GROUP BY dept.dept_name
+    `;
     db.all(SQL_CAPACITY, [], (err: any, rows: []) => {
       console.log("\nTotal capacity:");
       if (err) {
