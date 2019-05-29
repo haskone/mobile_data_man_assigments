@@ -15,7 +15,6 @@ db.insertOne("Marc", "Robotics", 55000);
 db.insertOne("Python", "Psycology", 85000);
 db.insertOne("Chris", "Civil Engineering", 102000);
 
-console.log("****ALL:****\n");
 db.selectAll((row, err) => {
   console.log(
     row.id + ": " + row.name + " / " + row.department_name + " / " + row.salary

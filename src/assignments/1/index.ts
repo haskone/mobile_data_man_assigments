@@ -44,59 +44,61 @@ const getInsertPrep = (table: string) => {
             VALUES (?, ?, ?)`;
 };
 
-function insertAll(db, tableQuery, items, table) {
-  db.run(tableQuery);
-  for (const item of items) {
-    db.serialize(() => {
+function insertAll(db: any, tableQuery: string, items: any, table: string) {
+  db.serialize(() => {
+    db.run(tableQuery);
+    for (const item of items) {
       let stmt = db.prepare(getInsertPrep(table));
       stmt.run(item[0], item[1], item[2]);
       stmt.finalize();
-    });
-  }
+    }
+  });
 }
 
-function prints(db) {
-  db.all(
-    `SELECT room_number, building FROM ${TABLE_CLASSROOM} WHERE capacity > 50`,
-    [],
-    (err: any, rows: any) => {
-      console.log("\nCapacity > 50:");
-      if (err) {
-        throw err;
+function prints(db: any) {
+  db.serialize(() => {
+    db.all(
+      `SELECT room_number, building FROM ${TABLE_CLASSROOM} WHERE capacity > 50`,
+      [],
+      (err: any, rows: []) => {
+        console.log("\nCapacity > 50:");
+        if (err) {
+          throw err;
+        }
+        rows.forEach(row => {
+          console.log(row);
+        });
       }
-      rows.forEach(row => {
-        console.log(row);
-      });
-    }
-  );
+    );
 
-  db.all(
-    `SELECT dept_name FROM ${TABLE_DEPARTMENT} WHERE budget > 85000`,
-    [],
-    (err: any, rows: any) => {
-      console.log("\nBudget > 85000:");
-      if (err) {
-        throw err;
+    db.all(
+      `SELECT dept_name FROM ${TABLE_DEPARTMENT} WHERE budget > 85000`,
+      [],
+      (err: any, rows: []) => {
+        console.log("\nBudget > 85000:");
+        if (err) {
+          throw err;
+        }
+        rows.forEach(row => {
+          console.log(row);
+        });
       }
-      rows.forEach(row => {
-        console.log(row);
-      });
-    }
-  );
+    );
 
-  const SQL_CAPACITY = `
+    const SQL_CAPACITY = `
     SELECT dept_name, SUM(capacity) as total_capacity FROM ${TABLE_DEPARTMENT} 
     LEFT JOIN ${TABLE_CLASSROOM}
     ON ${TABLE_DEPARTMENT}.building = ${TABLE_CLASSROOM}.building
     GROUP BY ${TABLE_DEPARTMENT}.dept_name
   `;
-  db.all(SQL_CAPACITY, [], (err, rows) => {
-    console.log("\nTotal capacity:");
-    if (err) {
-      throw err;
-    }
-    rows.forEach(row => {
-      console.log(row);
+    db.all(SQL_CAPACITY, [], (err: any, rows: []) => {
+      console.log("\nTotal capacity:");
+      if (err) {
+        throw err;
+      }
+      rows.forEach(row => {
+        console.log(row);
+      });
     });
   });
 }
